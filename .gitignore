@@ -4,3 +4,7 @@ node_modules
 dist
 build
 out
+.env.local
+.env.*.local
+*.log
+.cache
