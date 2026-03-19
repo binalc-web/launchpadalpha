@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { CorporationProfilePage } from "@/pages/corporation-profile"
+import { CompanyDirectoryPage } from "@/pages/company-directory"
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<CorporationProfilePage />} />
         <Route path="/corporation/:id" element={<CorporationProfilePage />} />
+        <Route path="/company-directory" element={<CompanyDirectoryPage />} />
       </Routes>
     </BrowserRouter>
   )

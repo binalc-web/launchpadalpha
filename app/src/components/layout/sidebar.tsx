@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Link, useLocation } from "react-router-dom"
 import {
   LayoutDashboard,
   Building2,
@@ -19,23 +20,36 @@ import {
 interface SidebarItemProps {
   icon: React.ReactNode
   label: string
+  to?: string
   active?: boolean
 }
 
-function SidebarItem({ icon, label, active }: SidebarItemProps) {
-  return (
-    <button
-      type="button"
-      className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-        active
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-      }`}
-    >
+function SidebarItem({ icon, label, to, active }: SidebarItemProps) {
+  const baseClass =
+    "flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors " +
+    (active
+      ? "bg-primary text-primary-foreground"
+      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground")
+
+  const content = (
+    <>
       <span className="flex h-5 w-5 shrink-0 items-center justify-center">
         {icon}
       </span>
       <span className="flex-1 text-left">{label}</span>
+    </>
+  )
+
+  if (to) {
+    return (
+      <Link to={to} className={baseClass}>
+        {content}
+      </Link>
+    )
+  }
+  return (
+    <button type="button" className={baseClass}>
+      {content}
     </button>
   )
 }
@@ -58,9 +72,19 @@ function SidebarGroup({ label, children }: SidebarGroupProps) {
 
 interface SidebarProps {
   collapsed?: boolean
+  activeItem?: "corporation-directory" | "company-directory"
 }
 
-export function Sidebar({ collapsed = false }: SidebarProps) {
+export function Sidebar({ collapsed = false, activeItem }: SidebarProps) {
+  const location = useLocation()
+  const isCorpDir =
+    activeItem === "corporation-directory" ||
+    location.pathname === "/" ||
+    location.pathname.startsWith("/corporation/")
+  const isCompanyDir =
+    activeItem === "company-directory" ||
+    location.pathname === "/company-directory"
+
   return (
     <aside
       data-node-id="1-10654"
@@ -79,9 +103,15 @@ export function Sidebar({ collapsed = false }: SidebarProps) {
               <SidebarItem
                 icon={<Building2 className="h-4 w-4" />}
                 label="Corporation Directory"
-                active
+                to="/"
+                active={isCorpDir}
               />
-              <SidebarItem icon={<MapPin className="h-4 w-4" />} label="Company Directory" />
+              <SidebarItem
+                icon={<MapPin className="h-4 w-4" />}
+                label="Company Directory"
+                to="/company-directory"
+                active={isCompanyDir}
+              />
             </SidebarGroup>
             <SidebarGroup label="Users & Access">
               <SidebarItem icon={<Users className="h-4 w-4" />} label="User Directory" />
