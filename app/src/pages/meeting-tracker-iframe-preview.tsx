@@ -1,5 +1,4 @@
 import { Calendar } from "lucide-react"
-import { Card, CardHeader } from "@/components/ui/card"
 
 /**
  * Static preview shell matching iframe preview /iframe-preview/8004/ (branding column).
@@ -22,11 +21,7 @@ export function MeetingTrackerIframePreviewPage() {
             </p>
           </div>
         </div>
-        <Card className="w-full max-w-md mx-auto bg-card/80 backdrop-blur-sm border-2">
-          <CardHeader className="text-center">
-            <h4 className="text-2xl font-medium">Welcome TEST</h4>
-          </CardHeader>
-        </Card>
+        <div className="hidden lg:block" aria-hidden />
       </div>
     </div>
   )
