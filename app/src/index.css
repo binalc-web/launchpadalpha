@@ -27,6 +27,7 @@
   /* Destructive */
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
+  --sidebar: #f1f5f9;
 
   /* Spacing (from design system) */
   --spacing-xs: 4px;

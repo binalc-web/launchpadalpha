@@ -19,6 +19,13 @@ export default {
         'card-foreground': 'var(--card-foreground)',
         destructive: 'var(--destructive)',
         'destructive-foreground': 'var(--destructive-foreground)',
+        sidebar: 'var(--sidebar)',
+        text: {
+          foreground: '#2f414a',
+        },
+      },
+      spacing: {
+        15: '3.75rem',
       },
     },
   },
