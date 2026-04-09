@@ -10,7 +10,7 @@ export function CorporationsPage() {
         <Sidebar />
         <MainWrapper>
           <div className="border-b border-border bg-card px-6 py-4">
-            <h1 className="mb-1 text-xl font-semibold text-foreground">TEST</h1>
+            <h1 className="mb-1 text-xl font-semibold text-red-600">TEST</h1>
           </div>
         </MainWrapper>
       </div>
