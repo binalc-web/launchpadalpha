@@ -12,7 +12,7 @@ export const AUTH_FIELD_NAMES = {
 } as const;
 
 export const LOGIN_PAGE_CONTENT = {
-	title: "Welcome back!",
+	title: "Welcome Tester",
 	subtitle: "Enter your email and password to sign in.",
 	emailLabel: "Email",
 	emailPlaceholder: "Enter email",
