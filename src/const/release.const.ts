@@ -1,7 +1,7 @@
 export const RELEASE_PAGE_CONTENT = {
-	title: "Release",
+	title: "Release Roadmap",
 	subtitle: "Planned and actual release dates by version.",
-	breadcrumbsTitle: "Release",
+	breadcrumbsTitle: "Release Roadmap",
 	columnPlanned: "Planned Release",
 	columnActual: "Actual Release",
 	plannedLabel: "ReleaseDate",
