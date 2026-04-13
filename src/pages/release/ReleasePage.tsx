@@ -90,36 +90,37 @@ export function ReleasePage() {
 			</div>
 
 			<div className="flex flex-col gap-0 lg:flex-row lg:gap-10">
-				{/* Timeline */}
-				<div className="relative shrink-0 lg:w-44">
-					<div
-						className="absolute left-[11px] top-2 bottom-2 w-px bg-border lg:left-[11px]"
-						aria-hidden
-					/>
-					<ul className="relative flex flex-row gap-6 overflow-x-auto pb-4 lg:flex-col lg:gap-8 lg:overflow-visible lg:pb-0 lg:pr-2">
-						{RELEASE_TIMELINE_MOCK.map((entry, index) => (
-							<li
-								key={entry.id}
-								className="flex min-w-[140px] gap-3 lg:min-w-0"
-							>
-								<div className="relative z-[1] flex h-6 w-6 shrink-0 items-center justify-center">
-									<span
-										className={cn(
-											"size-3 rounded-full border-2 border-primary bg-card shadow-sm",
-											index === 0 && "bg-primary",
-										)}
-									/>
-								</div>
-								<div className="flex min-w-0 flex-col pt-0.5">
-									<span className="text-small font-semibold text-text-foreground">
+				{/* Timeline — green halo nodes + vertical connector */}
+				<div className="relative mx-auto shrink-0 lg:mx-0 lg:w-44">
+					<ul className="flex flex-col items-center">
+						{RELEASE_TIMELINE_MOCK.map((entry, index) => {
+							const isLast = index === RELEASE_TIMELINE_MOCK.length - 1;
+							return (
+								<li
+									key={entry.id}
+									className="flex flex-col items-center text-center"
+								>
+									<div
+										className="flex size-8 shrink-0 items-center justify-center rounded-full bg-success-bg shadow-[0_0_0_1px_rgba(255,255,255,0.5)_inset]"
+										aria-hidden
+									>
+										<span className="size-3.5 rounded-full bg-success shadow-sm ring-2 ring-background" />
+									</div>
+									<span className="mt-2 text-small font-bold text-text-foreground">
 										{entry.version}
 									</span>
-									<span className="text-xs text-text-secondary">
+									<span className="mt-0.5 text-xs text-text-secondary">
 										{entry.timelineDate}
 									</span>
-								</div>
-							</li>
-						))}
+									{!isLast ? (
+										<div
+											className="mt-3 h-10 w-1 shrink-0 rounded-full bg-border"
+											aria-hidden
+										/>
+									) : null}
+								</li>
+							);
+						})}
 					</ul>
 				</div>
 
