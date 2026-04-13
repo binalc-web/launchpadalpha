@@ -9,6 +9,7 @@ export const RELEASE_PAGE_CONTENT = {
 	actualLabel: "Actual Release Date",
 	plannedHeaderEyebrow: "Planned release dates",
 	actualHeaderEyebrow: "Actual release date",
+	actualNotesEyebrow: "Actual release notes",
 	accordionDescription: "Description",
 	accordionChangeHistory: "Change history",
 	accordionRevisionHistory: "Revision history",
@@ -29,6 +30,7 @@ export type ReleaseTimelineEntry = {
 	/** Shown in the planned card date row; use a range with → when applicable. */
 	plannedDateRangeDisplay: string;
 	actualDateDisplay: string;
+	actualReleaseNotes: string;
 	ownerName: string;
 	ownerInitials: string;
 	revisionCount: number;
@@ -42,7 +44,9 @@ export const RELEASE_TIMELINE_MOCK: ReleaseTimelineEntry[] = [
 		version: "1.21.9",
 		timelineDate: "Mar 30, 2026",
 		plannedDateRangeDisplay: "March 1, 2026 → March 8, 2026",
-		actualDateDisplay: "4th March 2026",
+		actualDateDisplay: "March 4, 2026",
+		actualReleaseNotes:
+			"Ship window confirmed; regression suite green on staging.",
 		ownerName: "Vraj Gangani",
 		ownerInitials: "VG",
 		revisionCount: 1,
@@ -53,7 +57,9 @@ export const RELEASE_TIMELINE_MOCK: ReleaseTimelineEntry[] = [
 		version: "1.21.6",
 		timelineDate: "Mar 25, 2026",
 		plannedDateRangeDisplay: "February 18, 2026 → February 28, 2026",
-		actualDateDisplay: "25th March 2026",
+		actualDateDisplay: "March 25, 2026",
+		actualReleaseNotes:
+			"Patch verified in production; monitoring dashboards nominal.",
 		ownerName: "Vraj Gangani",
 		ownerInitials: "VG",
 		revisionCount: 2,
@@ -64,7 +70,9 @@ export const RELEASE_TIMELINE_MOCK: ReleaseTimelineEntry[] = [
 		version: "1.21.3",
 		timelineDate: "Feb 14, 2026",
 		plannedDateRangeDisplay: "February 1, 2026 → February 12, 2026",
-		actualDateDisplay: "14th February 2026",
+		actualDateDisplay: "February 14, 2026",
+		actualReleaseNotes:
+			"Hotfix deployed; customer comms sent per runbook.",
 		ownerName: "Vraj Gangani",
 		ownerInitials: "VG",
 		revisionCount: 1,

@@ -26,45 +26,27 @@ const plannedHeaderClass =
 const plannedIconBoxClass = "bg-[#FAF6ED] text-[#78350F]";
 const plannedEyebrowClass = "text-[#B45309]";
 
-const actualVariants = {
-	pink: {
-		wrap: "border-[#F8D7DA] bg-gradient-to-r from-[#FFF1F1] to-white",
-		iconBox: "bg-[#F5C6CB] text-[#9B2C2C]",
-		eyebrow: "text-[#C53030]",
-	},
-	teal: {
-		wrap: "border-[#B2F5EA] bg-gradient-to-r from-[#E6FFFA] to-white",
-		iconBox: "bg-[#9AE6DE] text-[#234E52]",
-		eyebrow: "text-[#2C7A7B]",
-	},
-} as const;
-
 const headerGridClass =
 	"mb-6 hidden pb-3 lg:grid lg:grid-cols-[minmax(0,1fr)_5.5rem_minmax(0,1fr)] lg:gap-x-8";
 
-function ReleaseDateGradientHeader({
+function PlannedDateGradientHeader({
 	eyebrow,
 	dateLine,
-	variant,
 }: {
 	eyebrow: string;
 	dateLine: string;
-	variant: "planned" | "pink" | "teal";
 }) {
-	const isPlanned = variant === "planned";
-	const v = isPlanned ? null : actualVariants[variant];
-
 	return (
 		<div
 			className={cn(
 				"flex gap-3 rounded-xl border p-3.5 shadow-sm",
-				isPlanned ? plannedHeaderClass : v?.wrap,
+				plannedHeaderClass,
 			)}
 		>
 			<div
 				className={cn(
 					"flex size-10 shrink-0 items-center justify-center rounded-lg border border-[#E8D4A8]/60",
-					isPlanned ? plannedIconBoxClass : v?.iconBox,
+					plannedIconBoxClass,
 				)}
 			>
 				<Calendar className="size-5" strokeWidth={2} aria-hidden />
@@ -73,7 +55,7 @@ function ReleaseDateGradientHeader({
 				<p
 					className={cn(
 						"text-[10px] font-semibold uppercase tracking-wide",
-						isPlanned ? plannedEyebrowClass : v?.eyebrow,
+						plannedEyebrowClass,
 					)}
 				>
 					{eyebrow}
@@ -83,6 +65,41 @@ function ReleaseDateGradientHeader({
 				</p>
 			</div>
 		</div>
+	);
+}
+
+function ActualReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
+	return (
+		<Card className="overflow-hidden border-border shadow-md" size="sm">
+			<CardContent className="flex flex-col gap-3 p-4 sm:p-5 lg:pt-6">
+				<div className="flex gap-3 rounded-xl border border-[#F5C4C9] bg-[#FFF5F6] p-3.5 shadow-sm">
+					<div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-[#E8E8E8] bg-white shadow-sm">
+						<Calendar
+							className="size-5 text-[#DC2626]"
+							strokeWidth={2}
+							aria-hidden
+						/>
+					</div>
+					<div className="min-w-0 flex flex-col justify-center gap-1">
+						<p className="text-[10px] font-bold uppercase tracking-wide text-[#DC2626]">
+							{RELEASE_PAGE_CONTENT.actualHeaderEyebrow}
+						</p>
+						<p className="text-base font-semibold leading-snug text-text-foreground">
+							{entry.actualDateDisplay}
+						</p>
+					</div>
+				</div>
+
+				<div className="rounded-xl border border-border bg-muted/40 p-3.5">
+					<p className="text-[10px] font-bold uppercase tracking-wide text-text-secondary">
+						{RELEASE_PAGE_CONTENT.actualNotesEyebrow}
+					</p>
+					<p className="mt-2 text-small font-normal leading-relaxed text-text-foreground">
+						{entry.actualReleaseNotes}
+					</p>
+				</div>
+			</CardContent>
+		</Card>
 	);
 }
 
@@ -115,10 +132,9 @@ function PlannedReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 		<Card className="overflow-hidden border-border shadow-md" size="sm">
 			<div className="h-2 w-full shrink-0 bg-success" aria-hidden />
 			<CardContent className="space-y-5 p-5">
-				<ReleaseDateGradientHeader
+				<PlannedDateGradientHeader
 					eyebrow={RELEASE_PAGE_CONTENT.plannedHeaderEyebrow}
 					dateLine={entry.plannedDateRangeDisplay}
-					variant="planned"
 				/>
 
 				<div className="flex flex-wrap items-center justify-between gap-3">
@@ -319,57 +335,24 @@ export function ReleasePage() {
 				</div>
 
 				<div className="min-w-0 flex-1 space-y-10">
-					{RELEASE_TIMELINE_MOCK.map((entry, rowIndex) => {
-						const actualVariant =
-							rowIndex % 2 === 0 ? ("pink" as const) : ("teal" as const);
-						return (
-							<Card
-								key={`actual-${entry.id}`}
-								className="overflow-hidden border-border shadow-md"
-								size="sm"
-							>
-								<CardContent className="p-5 lg:pt-7">
-									<div className="lg:mt-1">
-										<ReleaseDateGradientHeader
-											eyebrow={RELEASE_PAGE_CONTENT.actualHeaderEyebrow}
-											dateLine={entry.actualDateDisplay}
-											variant={actualVariant}
-										/>
-									</div>
-								</CardContent>
-							</Card>
-						);
-					})}
+					{RELEASE_TIMELINE_MOCK.map((entry) => (
+						<ActualReleaseCard key={`actual-${entry.id}`} entry={entry} />
+					))}
 				</div>
 			</div>
 
 			{/* Mobile: stacked blocks per release (planned → timeline → actual) */}
 			<div className="flex flex-col gap-10 lg:hidden">
-				{RELEASE_TIMELINE_MOCK.map((entry, rowIndex) => {
-					const actualVariant =
-						rowIndex % 2 === 0 ? ("pink" as const) : ("teal" as const);
-					return (
-						<div key={entry.id} className="flex flex-col gap-4">
-							<PlannedReleaseCard entry={entry} />
-							<TimelineNodeBlock
-								version={entry.version}
-								timelineDate={entry.timelineDate}
-							/>
-							<Card
-								className="overflow-hidden border-border shadow-md"
-								size="sm"
-							>
-								<CardContent className="p-5">
-									<ReleaseDateGradientHeader
-										eyebrow={RELEASE_PAGE_CONTENT.actualHeaderEyebrow}
-										dateLine={entry.actualDateDisplay}
-										variant={actualVariant}
-									/>
-								</CardContent>
-							</Card>
-						</div>
-					);
-				})}
+				{RELEASE_TIMELINE_MOCK.map((entry) => (
+					<div key={entry.id} className="flex flex-col gap-4">
+						<PlannedReleaseCard entry={entry} />
+						<TimelineNodeBlock
+							version={entry.version}
+							timelineDate={entry.timelineDate}
+						/>
+						<ActualReleaseCard entry={entry} />
+					</div>
+				))}
 			</div>
 		</AppLayout>
 	);
