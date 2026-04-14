@@ -10,11 +10,15 @@ export const RELEASE_PAGE_CONTENT = {
 	plannedHeaderEyebrow: "Planned release dates",
 	actualHeaderEyebrow: "Actual release date",
 	actualNotesEyebrow: "Actual release notes",
+	actualNotCompleted: "Release not completed",
+	timelineMvpBadge: "MVP",
 	accordionDescription: "Description",
 	accordionChangeHistory: "Change history",
 	accordionRevisionHistory: "Revision history",
 	revisionLatestPrefix: "Latest",
 	plannedStatusActive: "Active",
+	plannedStatusLocked: "Locked",
+	plannedStatusDraft: "Draft",
 	plannedDescriptionPlaceholder:
 		"Release scope, acceptance criteria, and rollout notes will appear here.",
 	plannedChangeHistoryPlaceholder:
@@ -23,14 +27,20 @@ export const RELEASE_PAGE_CONTENT = {
 		"Revision notes and approvals will appear here.",
 } as const;
 
+export type PlannedReleaseStatus = "active" | "locked" | "draft";
+export type ActualHeaderTheme = "pink" | "teal";
+
 export type ReleaseTimelineEntry = {
 	id: string;
 	version: string;
+	/** Optional; not shown on the timeline when using MVP-only nodes. */
 	timelineDate: string;
-	/** Shown in the planned card date row; use a range with → when applicable. */
 	plannedDateRangeDisplay: string;
+	plannedStatus: PlannedReleaseStatus;
+	actualCompleted: boolean;
 	actualDateDisplay: string;
 	actualReleaseNotes: string;
+	actualHeaderTheme: ActualHeaderTheme;
 	ownerName: string;
 	ownerInitials: string;
 	revisionCount: number;
@@ -41,41 +51,48 @@ export type ReleaseTimelineEntry = {
 export const RELEASE_TIMELINE_MOCK: ReleaseTimelineEntry[] = [
 	{
 		id: "1",
-		version: "1.21.9",
+		version: "1.0.10",
 		timelineDate: "Mar 30, 2026",
-		plannedDateRangeDisplay: "March 1, 2026 → March 8, 2026",
-		actualDateDisplay: "March 4, 2026",
-		actualReleaseNotes:
-			"Ship window confirmed; regression suite green on staging.",
+		plannedDateRangeDisplay: "April 1, 2026 → April 15, 2026",
+		plannedStatus: "active",
+		actualCompleted: false,
+		actualDateDisplay: "",
+		actualReleaseNotes: "",
+		actualHeaderTheme: "pink",
 		ownerName: "Vraj Gangani",
 		ownerInitials: "VG",
-		revisionCount: 1,
-		revisionLatestId: "R1",
+		revisionCount: 25,
+		revisionLatestId: "R25",
 	},
 	{
 		id: "2",
-		version: "1.21.6",
+		version: "1.0.9",
 		timelineDate: "Mar 25, 2026",
-		plannedDateRangeDisplay: "February 18, 2026 → February 28, 2026",
-		actualDateDisplay: "March 25, 2026",
-		actualReleaseNotes:
-			"Patch verified in production; monitoring dashboards nominal.",
-		ownerName: "Vraj Gangani",
-		ownerInitials: "VG",
-		revisionCount: 2,
-		revisionLatestId: "R2",
-	},
-	{
-		id: "3",
-		version: "1.21.3",
-		timelineDate: "Feb 14, 2026",
-		plannedDateRangeDisplay: "February 1, 2026 → February 12, 2026",
-		actualDateDisplay: "February 14, 2026",
-		actualReleaseNotes:
-			"Hotfix deployed; customer comms sent per runbook.",
+		plannedDateRangeDisplay: "April 5, 2026 → April 11, 2026",
+		plannedStatus: "draft",
+		actualCompleted: true,
+		actualDateDisplay: "April 25, 2026",
+		actualReleaseNotes: "early complete release",
+		actualHeaderTheme: "teal",
 		ownerName: "Vraj Gangani",
 		ownerInitials: "VG",
 		revisionCount: 1,
 		revisionLatestId: "R1",
+	},
+	{
+		id: "3",
+		version: "1.0.8",
+		timelineDate: "Feb 14, 2026",
+		plannedDateRangeDisplay: "March 1, 2026 → March 20, 2026",
+		plannedStatus: "locked",
+		actualCompleted: true,
+		actualDateDisplay: "April 18, 2026",
+		actualReleaseNotes:
+			"This is the first actual release notes for this version.",
+		actualHeaderTheme: "pink",
+		ownerName: "Vraj Gangani",
+		ownerInitials: "VG",
+		revisionCount: 3,
+		revisionLatestId: "R3",
 	},
 ] as const;

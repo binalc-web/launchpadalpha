@@ -3,6 +3,7 @@ import {
 	Calendar,
 	ChevronDown,
 	History,
+	Lock,
 	Sparkles,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -26,8 +27,38 @@ const plannedHeaderClass =
 const plannedIconBoxClass = "bg-[#FAF6ED] text-[#78350F]";
 const plannedEyebrowClass = "text-[#B45309]";
 
+/** Mint/teal timeline (reference UI). */
+const timelineTeal = {
+	ring: "bg-[#CCFBF1]",
+	dot: "bg-[#14B8A6]",
+	badge: "bg-[#14B8A6] text-white",
+} as const;
+
+const actualThemes: Record<
+	ReleaseTimelineEntry["actualHeaderTheme"],
+	{
+		wrap: string;
+		icon: string;
+		label: string;
+		iconBox: string;
+	}
+> = {
+	pink: {
+		wrap: "border-[#F5C4C9] bg-[#FFF5F6]",
+		icon: "text-[#DC2626]",
+		label: "text-[#DC2626]",
+		iconBox: "border-[#E8E8E8] bg-white",
+	},
+	teal: {
+		wrap: "border-[#99F6E4] bg-[#F0FDFA]",
+		icon: "text-[#0D9488]",
+		label: "text-[#0F766E]",
+		iconBox: "border-[#E8E8E8] bg-white",
+	},
+};
+
 const headerGridClass =
-	"mb-6 hidden pb-3 lg:grid lg:grid-cols-[minmax(0,1fr)_5.5rem_minmax(0,1fr)] lg:gap-x-8";
+	"mb-6 hidden pb-3 lg:grid lg:grid-cols-[minmax(0,1fr)_6.5rem_minmax(0,1fr)] lg:gap-x-8";
 
 function PlannedDateGradientHeader({
 	eyebrow,
@@ -69,19 +100,47 @@ function PlannedDateGradientHeader({
 }
 
 function ActualReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
+	if (!entry.actualCompleted) {
+		return (
+			<Card
+				className="overflow-hidden border border-border bg-card shadow-sm"
+				size="sm"
+			>
+				<CardContent className="flex min-h-[140px] items-center justify-center p-6 lg:min-h-[160px]">
+					<p className="text-center text-small font-medium text-text-secondary">
+						{RELEASE_PAGE_CONTENT.actualNotCompleted}
+					</p>
+				</CardContent>
+			</Card>
+		);
+	}
+
+	const th = actualThemes[entry.actualHeaderTheme];
+
 	return (
-		<Card className="overflow-hidden border-border shadow-md" size="sm">
+		<Card className="overflow-hidden border border-border bg-card shadow-sm" size="sm">
 			<CardContent className="flex flex-col gap-3 p-4 sm:p-5 lg:pt-6">
-				<div className="flex gap-3 rounded-xl border border-[#F5C4C9] bg-[#FFF5F6] p-3.5 shadow-sm">
-					<div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-[#E8E8E8] bg-white shadow-sm">
-						<Calendar
-							className="size-5 text-[#DC2626]"
-							strokeWidth={2}
-							aria-hidden
-						/>
+				<div
+					className={cn(
+						"flex gap-3 rounded-xl border p-3.5 shadow-sm",
+						th.wrap,
+					)}
+				>
+					<div
+						className={cn(
+							"flex size-10 shrink-0 items-center justify-center rounded-lg shadow-sm",
+							th.iconBox,
+						)}
+					>
+						<Calendar className={cn("size-5", th.icon)} strokeWidth={2} aria-hidden />
 					</div>
 					<div className="min-w-0 flex flex-col justify-center gap-1">
-						<p className="text-[10px] font-bold uppercase tracking-wide text-[#DC2626]">
+						<p
+							className={cn(
+								"text-[10px] font-bold uppercase tracking-wide",
+								th.label,
+							)}
+						>
 							{RELEASE_PAGE_CONTENT.actualHeaderEyebrow}
 						</p>
 						<p className="text-base font-semibold leading-snug text-text-foreground">
@@ -90,7 +149,7 @@ function ActualReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 					</div>
 				</div>
 
-				<div className="rounded-xl border border-border bg-muted/40 p-3.5">
+				<div className="rounded-xl border border-border bg-white p-3.5">
 					<p className="text-[10px] font-bold uppercase tracking-wide text-text-secondary">
 						{RELEASE_PAGE_CONTENT.actualNotesEyebrow}
 					</p>
@@ -122,6 +181,42 @@ function AccordionBar({
 	);
 }
 
+function PlannedStatusBadge({ entry }: { entry: ReleaseTimelineEntry }) {
+	if (entry.plannedStatus === "active") {
+		return (
+			<span
+				className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-success/35 bg-success-bg px-2.5 py-1 text-xs font-medium text-success"
+				data-slot="release-status-badge"
+			>
+				<span className="size-1.5 rounded-full bg-success" aria-hidden />
+				{RELEASE_PAGE_CONTENT.plannedStatusActive}
+				<Sparkles className="size-3.5 opacity-90" strokeWidth={2} aria-hidden />
+			</span>
+		);
+	}
+	if (entry.plannedStatus === "locked") {
+		return (
+			<span
+				className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-destructive/30 bg-[#FEF2F2] px-2.5 py-1 text-xs font-medium text-destructive"
+				data-slot="release-status-badge"
+			>
+				<span className="size-1.5 rounded-full bg-destructive" aria-hidden />
+				{RELEASE_PAGE_CONTENT.plannedStatusLocked}
+				<Lock className="size-3.5 opacity-90" strokeWidth={2} aria-hidden />
+			</span>
+		);
+	}
+	return (
+		<span
+			className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
+			data-slot="release-status-badge"
+		>
+			<span className="size-1.5 rounded-full bg-muted-foreground/60" aria-hidden />
+			{RELEASE_PAGE_CONTENT.plannedStatusDraft}
+		</span>
+	);
+}
+
 function PlannedReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 	const revisionLabel =
 		entry.revisionCount === 1
@@ -130,7 +225,7 @@ function PlannedReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 
 	return (
 		<Card className="overflow-hidden border-border shadow-md" size="sm">
-			<div className="h-2 w-full shrink-0 bg-success" aria-hidden />
+			<div className="h-1.5 w-full shrink-0 bg-destructive" aria-hidden />
 			<CardContent className="space-y-5 p-5">
 				<PlannedDateGradientHeader
 					eyebrow={RELEASE_PAGE_CONTENT.plannedHeaderEyebrow}
@@ -148,21 +243,7 @@ function PlannedReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 							{entry.ownerName}
 						</span>
 					</div>
-					<span
-						className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-success/35 bg-success-bg px-2.5 py-1 text-xs font-medium text-success"
-						data-slot="release-status-badge"
-					>
-						<span
-							className="size-1.5 rounded-full bg-success"
-							aria-hidden
-						/>
-						{RELEASE_PAGE_CONTENT.plannedStatusActive}
-						<Sparkles
-							className="size-3.5 opacity-90"
-							strokeWidth={2}
-							aria-hidden
-						/>
-					</span>
+					<PlannedStatusBadge entry={entry} />
 				</div>
 
 				<div className="space-y-2">
@@ -243,26 +324,33 @@ function PlannedReleaseCard({ entry }: { entry: ReleaseTimelineEntry }) {
 	);
 }
 
-function TimelineNodeBlock({
-	version,
-	timelineDate,
-}: {
-	version: string;
-	timelineDate: string;
-}) {
+function TimelineNodeBlock({ version }: { version: string }) {
 	return (
-		<div className="flex w-full max-w-[5.5rem] flex-col items-center gap-2 px-1 py-1 text-center lg:gap-2.5 lg:py-0.5 lg:pt-1">
+		<div className="flex w-full max-w-[6.5rem] flex-col items-center gap-2.5 px-0.5 py-1 text-center lg:gap-3 lg:pt-1">
 			<div
-				className="relative z-[1] flex size-8 shrink-0 items-center justify-center rounded-full bg-success-bg shadow-[0_0_0_1px_rgba(255,255,255,0.5)_inset]"
+				className={cn(
+					"relative z-[1] flex size-9 shrink-0 items-center justify-center rounded-full shadow-[0_0_0_1px_rgba(255,255,255,0.6)_inset]",
+					timelineTeal.ring,
+				)}
 				aria-hidden
 			>
-				<span className="size-3.5 rounded-full bg-success shadow-sm ring-2 ring-background" />
+				<span
+					className={cn(
+						"size-4 rounded-full shadow-sm ring-2 ring-background",
+						timelineTeal.dot,
+					)}
+				/>
 			</div>
 			<span className="relative z-[1] text-small font-bold leading-tight text-text-foreground">
 				{version}
 			</span>
-			<span className="relative z-[1] text-xs leading-snug text-text-secondary">
-				{timelineDate}
+			<span
+				className={cn(
+					"relative z-[1] rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+					timelineTeal.badge,
+				)}
+			>
+				{RELEASE_PAGE_CONTENT.timelineMvpBadge}
 			</span>
 		</div>
 	);
@@ -313,24 +401,20 @@ export function ReleasePage() {
 			</div>
 
 			{/* Desktop: planned | timeline | actual */}
-			<div className="hidden lg:flex lg:gap-8 lg:items-start">
+			<div className="hidden lg:flex lg:gap-10 lg:items-start">
 				<div className="min-w-0 flex-1 space-y-10">
 					{RELEASE_TIMELINE_MOCK.map((entry) => (
 						<PlannedReleaseCard key={`planned-${entry.id}`} entry={entry} />
 					))}
 				</div>
 
-				<div className="relative flex w-[5.5rem] shrink-0 flex-col items-center gap-10 self-stretch">
+				<div className="relative flex w-[6.5rem] shrink-0 flex-col items-center gap-10 self-stretch">
 					<div
 						className="absolute top-0 bottom-0 left-1/2 z-0 w-px -translate-x-1/2 rounded-full bg-border"
 						aria-hidden
 					/>
 					{RELEASE_TIMELINE_MOCK.map((entry) => (
-						<TimelineNodeBlock
-							key={`node-${entry.id}`}
-							version={entry.version}
-							timelineDate={entry.timelineDate}
-						/>
+						<TimelineNodeBlock key={`node-${entry.id}`} version={entry.version} />
 					))}
 				</div>
 
@@ -341,15 +425,12 @@ export function ReleasePage() {
 				</div>
 			</div>
 
-			{/* Mobile: stacked blocks per release (planned → timeline → actual) */}
+			{/* Mobile */}
 			<div className="flex flex-col gap-10 lg:hidden">
 				{RELEASE_TIMELINE_MOCK.map((entry) => (
 					<div key={entry.id} className="flex flex-col gap-4">
 						<PlannedReleaseCard entry={entry} />
-						<TimelineNodeBlock
-							version={entry.version}
-							timelineDate={entry.timelineDate}
-						/>
+						<TimelineNodeBlock version={entry.version} />
 						<ActualReleaseCard entry={entry} />
 					</div>
 				))}
