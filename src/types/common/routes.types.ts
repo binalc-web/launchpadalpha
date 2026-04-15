@@ -61,6 +61,10 @@ export interface ReleaseRoutes {
 	root: string;
 }
 
+export interface KalravRoutes {
+	root: string;
+}
+
 export interface AppRoutes {
 	auth: AuthRoutes;
 	dashboard: DashboardRoutes;
@@ -71,4 +75,5 @@ export interface AppRoutes {
 	finance: FinanceRoutes;
 	userDirectory: UserDirectoryRoutes;
 	release: ReleaseRoutes;
+	kalrav: KalravRoutes;
 }

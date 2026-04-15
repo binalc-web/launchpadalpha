@@ -18,6 +18,7 @@ import {
 	EditRolePage,
 	ForgotPasswordPage,
 	InvoiceManagementPage,
+	KalravPage,
 	LoginPage,
 	ReleasePage,
 	RolesPermissionsPage,
@@ -64,6 +65,14 @@ export const routes: RouteConfig[] = [
 		element: (
 			<ProtectedRoute>
 				<ReleasePage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: ROUTES.kalrav.root,
+		element: (
+			<ProtectedRoute>
+				<KalravPage />
 			</ProtectedRoute>
 		),
 	},

@@ -49,4 +49,7 @@ export const ROUTES: AppRoutes = {
 	release: {
 		root: "/Release",
 	},
+	kalrav: {
+		root: "/kalrav",
+	},
 } as const;

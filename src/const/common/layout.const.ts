@@ -1,6 +1,7 @@
 import {
 	Building2,
 	LayoutDashboard,
+	LayoutGrid,
 	MapPin,
 	Package,
 	Receipt,
@@ -24,6 +25,12 @@ export const SIDEBAR_MENU: SidebarMenuSection[] = [
 				label: "Release",
 				icon: Package,
 				path: "/Release",
+			},
+			{
+				id: "kalrav",
+				label: "Kalrav",
+				icon: LayoutGrid,
+				path: "/kalrav",
 			},
 		],
 	},
