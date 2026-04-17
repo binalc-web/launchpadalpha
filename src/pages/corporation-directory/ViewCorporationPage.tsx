@@ -30,7 +30,11 @@ export function ViewCorporationPage() {
 	}, [corporationId, fetchCorporationById, clearCorporationDetail]);
 
 	const breadcrumbs = [
-		{ label: C.breadcrumbsTitle, path: ROUTES.corporateDirectory.root },
+		{
+			label: C.breadcrumbsTitle,
+			path: ROUTES.corporateDirectory.root,
+			className: C.breadcrumbDirectoryLabelClass,
+		},
 		...(corporationDetail
 			? [
 					{

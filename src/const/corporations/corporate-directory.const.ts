@@ -6,6 +6,8 @@ import type {
 
 export const CORPORATE_DIRECTORY_PAGE_CONTENT = {
 	breadcrumbsTitle: "Corporation Directory",
+	/** Header breadcrumb label when this title appears (link or current page). */
+	breadcrumbDirectoryLabelClass: "text-destructive hover:opacity-90",
 	Title: "Corporations",
 	subtitle: "View and manage all corporations across the platform",
 	addNewCorporationButton: "Add New Corporation",

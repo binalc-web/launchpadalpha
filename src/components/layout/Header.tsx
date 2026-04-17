@@ -14,6 +14,7 @@ import {
 import { useSidebar } from "@/components/ui/sidebar";
 import { HEADER_CONTENT, ICON_SIZES, USER_DROPDOWN_LABELS } from "@/const";
 import { useTheme } from "@/hooks";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store";
 import type { BreadcrumbItem } from "@/types";
 
@@ -60,12 +61,21 @@ export function Header({ breadcrumbs = [] }: HeaderProps) {
 								{item.path && index < breadcrumbs.length - 1 ? (
 									<Link
 										to={item.path}
-										className="truncate text-sm text-text-secondary hover:text-text-foreground transition-colors"
+										className={cn(
+											"truncate text-sm transition-colors",
+											item.className ??
+												"text-text-secondary hover:text-text-foreground",
+										)}
 									>
 										{item.label}
 									</Link>
 								) : (
-									<span className="truncate text-sm font-medium text-text-foreground capitalize">
+									<span
+										className={cn(
+											"truncate text-sm font-medium capitalize",
+											item.className ?? "text-text-foreground",
+										)}
+									>
 										{item.label}
 									</span>
 								)}

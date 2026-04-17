@@ -11,6 +11,7 @@ export function AddCorporationAdvancedSetupPage() {
 		{
 			label: CORPORATE_DIRECTORY_PAGE_CONTENT.breadcrumbsTitle,
 			path: ROUTES.corporateDirectory.root,
+			className: CORPORATE_DIRECTORY_PAGE_CONTENT.breadcrumbDirectoryLabelClass,
 		},
 		{
 			label: isEditMode

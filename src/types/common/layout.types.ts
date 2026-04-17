@@ -23,6 +23,8 @@ export type AppLayoutProps = {
 export type BreadcrumbItem = {
 	label: string;
 	path?: string;
+	/** Applied to this crumb’s label (link or current). */
+	className?: string;
 };
 
 export type HeaderProps = {

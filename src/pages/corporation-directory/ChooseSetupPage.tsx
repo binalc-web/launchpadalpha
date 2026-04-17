@@ -7,6 +7,7 @@ export const ChooseSetupPage = () => {
 		{
 			label: CORPORATE_DIRECTORY_PAGE_CONTENT.breadcrumbsTitle,
 			path: ROUTES.corporateDirectory.root,
+			className: CORPORATE_DIRECTORY_PAGE_CONTENT.breadcrumbDirectoryLabelClass,
 		},
 		{
 			label: CORPORATE_DIRECTORY_PAGE_CONTENT.chooseSetupBreadcrumbsTitle,
